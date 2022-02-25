@@ -97,11 +97,6 @@ export default {
       model: '',
     };
   },
-  methods: {
-    clear() {
-      this.$emit('clear', this.id);
-    },
-  },
   watch: {
     value(value) {
       this.model = value;
@@ -110,5 +105,9 @@ export default {
       this.$emit('input', value);
     },
   },
+  mounted() {
+    this.model = this.value;
+  },
 };
 </script>
+

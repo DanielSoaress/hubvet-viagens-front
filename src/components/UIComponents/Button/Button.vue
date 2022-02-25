@@ -118,33 +118,3 @@ export default {
 };
 </script>
 
-<style>
-  .toggle-container {
-      margin-top: -6px;
-  }
-
-  .toggle-container .v-item-group{
-      border: 1px solid rgba(0, 0, 0, 0.12);
-      border-radius: 4px;
-      background-color: transparent;
-  }
-
-  .toggle-container .v-btn-toggle:not(.v-btn-toggle--dense) .v-btn.v-btn.v-size--default {
-      height: 36px;
-  }
-
-  .toggle-container .v-btn{
-      background-color: #E5E5E5!important;
-  }
-
-  .toggle-container .v-btn--active {
-      background-color: #42b29c6c!important;
-      border-color: rgba(33, 33, 33, 0.08)!important;
-  }
-
-  .toggle-container p {
-      margin-bottom: 0px;
-      color: #909CA7;
-      font-weight: 500;
-  }
-</style>

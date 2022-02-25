@@ -1,4 +1,3 @@
-/*import { router } from '../config';*/
 import Inicio from '../pages/Inicio/Inicio';
 import Listagem from '../pages/Listagem/Listagem';
 import Final from '../pages/Final/Final';

@@ -22,6 +22,7 @@
                     placeholder="Pacotes"
                     :items="datasource_type"
                     itemText="nome"
+                    itemValue="id"                    
                     v-model="filters.type"
                 />
                 <Input
@@ -52,7 +53,12 @@
                     chips
                     small-chips
                     class="ml-43"
-                />
+                    :items="datasource_category"
+                    itemText="nome"
+                    itemValue="id"
+                    :chipsValue="true"
+                >
+                </Autocomplete>
                </div>    
                 <Button
                     id="btn_search"
@@ -89,15 +95,17 @@ export default {
   computed: {
     ...mapGetters('inicio', {
         datasource_type: 'datasource_type',
+        datasource_category: 'datasource_category'
     }),
   },
   methods: {
     ...mapActions('inicio', {
-      listar: 'listar',
+      set_filters: 'set_filters',
       carregar_type: 'carregar_type',
+      carregar_category: 'carregar_category'
     }),
     async pesquisar() {
-      await this.listar({
+      await this.set_filters({
         filters: this.filters,
       });
       this.$router.push('/viagens')
@@ -105,6 +113,7 @@ export default {
    },
    async created() {
      await this.carregar_type();
+     await this.carregar_category();
    }
 };
 </script>
@@ -128,6 +137,7 @@ export default {
 
 .text-input-home  {
     width: 416px;
+    max-width: 416px;
     border-radius: 8px;
     margin: 28px auto 0px auto;
 }

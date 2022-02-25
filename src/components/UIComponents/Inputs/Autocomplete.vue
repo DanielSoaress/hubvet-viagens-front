@@ -14,8 +14,25 @@
       :multiple="multiple"
       :items="items"
       :item-text="itemText"
+      :item-value="itemValue"
       align="center"
-    ></v-autocomplete>
+      v-model="model"
+    >
+      <template v-if="chipsValue" v-slot:selection="data">
+        <v-chip
+          v-bind="data.attrs"
+          :input-value="data.selected"
+          close
+          :color="data.item.color"
+          outlined
+          click="data.select"
+          @click:close="remove(data.item)"
+        >
+          {{ data.item.nome }}
+        </v-chip>
+      </template>
+      <slot />
+    </v-autocomplete>
 </template>
 
 <script>
@@ -77,6 +94,14 @@ export default {
       required: false,
     },
     /**
+     * Habilita o se a resposta vai ser em Chips.
+     */
+    chipsValue: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },    
+    /**
      * Datasource do Select em um elemento.
      */
     items: {
@@ -86,6 +111,14 @@ export default {
      * Caso for Array de objetos, nome que vai aparecer.
      */
     itemText: {
+      type: String,
+      default: '',
+      required: false,
+    },
+    /**
+     * Caso for Array de objetos, value do objeto.
+     */
+    itemValue: {
       type: String,
       default: '',
       required: false,
@@ -135,9 +168,11 @@ export default {
     };
   },
   methods: {
-    clear() {
-      this.$emit('clear', this.id);
+    remove (item) {
+      const index = this.model.indexOf(item.id)
+      if (index >= 0) this.model.splice(index, 1)
     },
+    
   },
   watch: {
     value(value) {
@@ -146,6 +181,9 @@ export default {
     model(value) {
       this.$emit('input', value);
     },
+  },
+  mounted() {
+    this.model = this.value;
   },
 };
 </script>

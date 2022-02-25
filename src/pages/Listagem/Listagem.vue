@@ -60,7 +60,12 @@
                                 multiple
                                 chips
                                 small-chips
-                            />                             
+                                :items="datasource_category"
+                                itemText="nome"
+                                itemValue="id"
+                                :chipsValue="true"
+                            >
+                            </Autocomplete>                       
                         </v-col>
                         <v-col cols="1" class="pb-0 px-0">
                             <Button
@@ -86,11 +91,14 @@
             <v-row class="mt-0">
                 <v-col cols='11' class="pb-0">
                     <v-tabs
+                        v-model="filters.type"
                         background-color="transparent">
-                        <v-tab>PASSAGENS</v-tab>
-                        <v-tab>HÓTEIS</v-tab>
-                        <v-tab>CARROS</v-tab>
-                        <v-tab>PACOTES</v-tab>
+                        <v-tab
+                            v-for="item in datasource_type"
+                            :key="item.id"
+                        >
+                            {{ item.nome }}
+                        </v-tab>
                     </v-tabs>
                 </v-col>
                 <v-col class="pb-0">
@@ -116,18 +124,25 @@
             <v-row class="mt-0">
                 <v-col :cols="isShowCart ? 8 : 12">
                     <v-data-table
-                        :headers="headers"
-                        :items="desserts"
+                        :headers="filters.moeda === 'real' ?
+                            pacote_headers_real : pacote_headers_milha"
+                        :items="datasource_pacote"
                         :items-per-page="5"
                         class="elevation-1"
                         :expanded.sync="expanded"
                         show-expand
-                        show-select    
-                        item-key="calories"                        
+                        show-select
+                        v-model="products"    
+                        item-key="id" 
+                        v-if="filters.type == 3"
+                        :footer-props="{
+                            'items-per-page-text':'Itens por página',
+                            'page-text': '{0}-{1} de {2}'                            
+                        }"                    
                     >
                         <template v-slot:expanded-item="{ headers, item }">
                             <td :colspan="headers.length">
-                                More info about {{ item.name }}
+                               {{ item.name }}
                             </td>
                         </template>
                     </v-data-table>
@@ -141,6 +156,7 @@
                     </v-navigation-drawer>
 
                     <Button
+                        v-if="isShowCart"
                         id="btn_buy"
                         name="btn_buy"
                         x-large
@@ -171,7 +187,6 @@
                     Tenha certeza ao selecionar a forma de pagamento correta de transação antes de continuar.
                 </v-card-text>
                 <v-checkbox
-                    v-model="checkbox1"
                     :label="`Boleto bancário`"
                 ></v-checkbox>
                 <v-card-text class="text-left">
@@ -207,7 +222,7 @@
                         dark
                         x-large
                         tile
-                        @click="dialog = false"
+                        @click="comprar()"
                         class="px-5"
                     >
                         <v-icon class="mr-4">
@@ -222,14 +237,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
     return {
         expanded: [],
-        isShowCart: true,
-        isShowBuyModal: true,        
+        isShowCart: false,
+        isShowBuyModal: false,  
+        products: [],      
         filters: {
             search: null,
             category: null,
@@ -237,109 +253,76 @@ export default {
             local: null,
             type: null,
         },
-        headers: [
-          { text: 'Código', value: 'calories'},
-          { text: 'Nome', value: 'fat', sortable: false },
-          { text: 'Preço (R$)', value: 'carbs', sortable: false },
-          { text: 'Etiquetas', value: 'protein', sortable: false },
+        pacote_headers_real: [
+          { text: 'Código', value: 'cod'},
+          { text: 'Nome', value: 'name', sortable: false },
+          { text: 'Preço (R$)', value: 'value', sortable: false },
+          { text: 'Etiquetas', value: 'category', sortable: false },
           { text: '', value: 'data-table-expand' },
         ],
-        desserts: [
+        pacote_headers_milha: [
+          { text: 'Código', value: 'cod'},
+          { text: 'Nome', value: 'name', sortable: false },
+          { text: 'Milhas', value: 'milhas', sortable: false },
+          { text: 'Etiquetas', value: 'category', sortable: false },
+          { text: '', value: 'data-table-expand' },
+        ],        
+        datasource_pacote: [
           {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
+            id: 1,
+            name: 'Final de ano em Copacabana',
+            cod: 'HP556',
+            value: '7.591,70',
+            milhas: '3.591',            
+            category: '',
           },
           {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
+            id: 2,  
+            name: 'Carnaval em Copacabana',
+            cod: 'HP504',
+            value: '6.266,10',
+            milhas: '2.591',                        
+            category: '',
           },
           {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%',
+            id: 3,  
+            name: 'Feriadão em Copacabana',
+            cod: 'HP589',
+            value: '2.190,75',
+            milhas: '1.391',                        
+            category: '',
           },
           {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%',
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%',
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%',
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%',
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%',
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%',
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%',
-          },
+            id: 4,  
+            name: 'Semana Santa em Copacabana',
+            cod: 'HP511',
+            value: '3.490,11',
+            milhas: '591',                        
+            category: '',
+          },                    
         ],
     };
   },
   computed: {
     ...mapGetters('inicio', {
-      filters: 'filters',
+      filters_store: 'filters',
+      datasource_type: 'datasource_type',
+      datasource_category: 'datasource_category'
     }),
   },
   methods: {
     async comprar() {
-      await this.listar({
-        filters: this.filters,
-      });
-      this.$router.push('/viagens')
-    }
+      this.$router.push('/final')
+    },
+    ...mapActions('inicio', {
+      carregar_type: 'carregar_type',
+      carregar_category: 'carregar_category'
+    }),
+  },
+  async created() {
+    this.filters = {...this.filters_store.filters};
+    await this.carregar_type();
+    await this.carregar_category();
   }
 };
 </script>
