@@ -8,6 +8,7 @@
       :prepend-inner-icon="prependInnerIcon"
       :solo='solo'
       :autofocus="autofocus"
+      v-model="model"
     ></v-text-field>
 </template>
 

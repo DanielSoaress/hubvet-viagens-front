@@ -28,23 +28,24 @@
                     label="Onde você está?"
                     class="ml-43"
                     v-model="filters.local"
-                />             
+                />         
                 <ToggleButton
                     id="moeda"
                     name="moeda"
-                    label="Milhas ou R$">
-                    <v-btn>
+                    label="Milhas ou R$"
+                    v-model="filters.moeda">
+                    <v-btn value="milha">
                         <img alt="Milhas" src="../../assets/img/milhas.png" width="18" height="13"> 
                     </v-btn>
-                    <v-btn>
+                    <v-btn value="real">
                         <img alt="Real" src="../../assets/img/money.png" > 
                     </v-btn>
                 </ToggleButton>   
                 <Autocomplete
-                    id="chips"
-                    name="chips"
+                    id="chips_category"
+                    name="chips_category"
                     label="Etiquetas"
-                    v-model="filters.chips"
+                    v-model="filters.category"
                     multiple
                     chips
                     small-chips
@@ -59,7 +60,8 @@
                     tile
                     color="#44BBA4"
                     dark
-                    >
+                    @click="pesquisar"
+                >
                     Pesquisar
                 </Button>
           </div>
@@ -74,6 +76,7 @@ export default {
     filters: {
         search: null,
         category: null,
+        moeda: 'real',
         local: null,
         chips: null,
       },

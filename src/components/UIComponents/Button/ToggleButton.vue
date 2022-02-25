@@ -4,6 +4,7 @@
       <v-btn-toggle
         :id="id"
         :name='name'
+        v-model="model"
       >
         <slot />
       </v-btn-toggle>
@@ -51,19 +52,18 @@ export default {
       model: '',
     };
   },
-  methods: {
-    clear() {
-      this.$emit('clear', this.id);
-    },
-  },
   watch: {
     value(value) {
+      console.log(value)
       this.model = value;
     },
     model(value) {
       this.$emit('input', value);
     },
   },
+  mounted() {
+    this.model = this.value;
+  }
 };
 </script>
 
