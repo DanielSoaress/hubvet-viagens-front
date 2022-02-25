@@ -16,11 +16,11 @@
           <div class="content-filter">
               <div class="filters">
                 <Autocomplete
-                    id="category"
-                    name="category"
+                    id="type"
+                    name="type"
                     label="Buscar por"
                     placeholder="Pacotes"
-                    v-model="filters.category"
+                    v-model="filters.type"
                 />
                 <Input
                     id="local"
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
@@ -78,16 +80,17 @@ export default {
         category: null,
         moeda: 'real',
         local: null,
-        chips: null,
+        type: null,
       },
     };
   },
   methods: {
+    ...mapActions('inicio', {
+      listar: 'listar',
+    }),
     async pesquisar() {
       await this.listar({
-        //...this.pagination,
         filters: this.filters,
-        current_page: 1,
       });
     }
    }

@@ -1,7 +1,12 @@
 export default {
-    exemplo: {
+    inicio: {
+      name: 'Home',
+      path: '/',
+      fullPath: '/'
+    },
+    listar: {
       name: 'Produto',
-      path: '/produto',
-      fullPath: '/produto'
+      path: '/viagens',
+      fullPath: '/viagens'
     },
   };
