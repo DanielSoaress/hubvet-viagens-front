@@ -9,4 +9,9 @@ export default {
       path: '/viagens',
       fullPath: '/viagens'
     },
+    final: {
+      name: 'Final',
+      path: '/final',
+      fullPath: '/final'
+    },
   };

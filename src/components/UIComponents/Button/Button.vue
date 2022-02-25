@@ -6,6 +6,9 @@
     :tile="tile"
     :color="color"
     :dark="dark"
+    @click="handleClick"
+    :icon="icon"
+    :fab="fab"
   >
     <slot />
   </v-btn>
@@ -54,6 +57,22 @@ export default {
       required: false,
     }, 
     /**
+     * Habilita Icon em um elemento.
+     */
+    icon: {
+      type: Boolean,
+      default: false,
+      required: false,
+    }, 
+    /**
+     * Habilita Fab em um elemento.
+     */
+    fab: {
+      type: Boolean,
+      default: false,
+      required: false,
+    }, 
+    /**
      * Habilita o x-large em um elemento.
      */
     xLarge: {
@@ -84,8 +103,8 @@ export default {
     };
   },
   methods: {
-    clear() {
-      this.$emit('clear', this.id);
+    handleClick(evt) {
+      this.$emit('click', evt);
     },
   },
   watch: {

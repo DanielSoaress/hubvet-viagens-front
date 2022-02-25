@@ -20,6 +20,8 @@
                     name="type"
                     label="Buscar por"
                     placeholder="Pacotes"
+                    :items="datasource_type"
+                    itemText="nome"
                     v-model="filters.type"
                 />
                 <Input
@@ -70,7 +72,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -84,15 +86,25 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters('inicio', {
+        datasource_type: 'datasource_type',
+    }),
+  },
   methods: {
     ...mapActions('inicio', {
       listar: 'listar',
+      carregar_type: 'carregar_type',
     }),
     async pesquisar() {
       await this.listar({
         filters: this.filters,
       });
+      this.$router.push('/viagens')
     }
+   },
+   async created() {
+     await this.carregar_type();
    }
 };
 </script>

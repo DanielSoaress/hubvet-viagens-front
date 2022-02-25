@@ -87,8 +87,7 @@ export default {
   }
 
   .toggle-container .v-btn--active {
-      background-color: #42b29c6c!important;
-      border-color: rgba(33, 33, 33, 0.08)!important;
+      background-color: #82C6B8!important;
   }
 
   .toggle-container p {

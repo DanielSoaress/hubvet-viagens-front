@@ -12,6 +12,9 @@
       :chips="chips"
       :small-chips="smallChips"
       :multiple="multiple"
+      :items="items"
+      :item-text="itemText"
+      align="center"
     ></v-autocomplete>
 </template>
 
@@ -71,6 +74,20 @@ export default {
     chips: {
       type: Boolean,
       default: false,
+      required: false,
+    },
+    /**
+     * Datasource do Select em um elemento.
+     */
+    items: {
+      required: false,
+    },
+    /**
+     * Caso for Array de objetos, nome que vai aparecer.
+     */
+    itemText: {
+      type: String,
+      default: '',
       required: false,
     },
     /**
