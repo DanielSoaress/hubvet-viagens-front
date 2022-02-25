@@ -5,9 +5,9 @@
       </v-main>
        <v-footer id="footer" app>
          <p>Mantido & Feito com  
-           <img alt="Coração Icon" src="./assets/heart.png"> 
+           <img alt="Coração Icon" src="./assets/img/heart.png"> 
            COPYRIGHT @ 2020  
-           <img alt="logo hubvet" src="./assets/logo-mini.png" >
+           <img alt="logo hubvet" src="./assets/img/logo-mini.png" >
            , All rigths Reserved
           </p>         
      </v-footer>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import './assets/css/global.css';
+
 
 export default {
   name: 'App',

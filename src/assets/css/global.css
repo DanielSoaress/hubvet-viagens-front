@@ -1,0 +1,18 @@
+/* INPUT EXTRA LARGE - HOME */
+.text-input-home .v-input__slot  {
+    padding: 15px 23px!important;
+}
+
+.text-input-home .v-text-field__slot {
+    font-size: 20px!important;
+}
+
+.text-input-home .v-input__icon {
+    width: 26px;
+    height: 26px;
+}
+
+.text-input-home .v-input__prepend-inner {
+    padding-right: 10px!important;
+}
+

@@ -3,6 +3,8 @@ import App from './App.vue';
 import { vuetify } from '@/config';
 import VueRouter from 'vue-router';
 import routes from './routes';
+import { components } from './global';
+
 
 Vue.config.productionTip = false;
 
@@ -12,6 +14,8 @@ const router = new VueRouter({
   mode: 'history',
   routes,
 });
+
+Vue.use(components);
 
 new Vue({
   beforeCreate: function() {
